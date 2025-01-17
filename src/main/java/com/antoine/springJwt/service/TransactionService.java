@@ -28,6 +28,11 @@ public class TransactionService {
         return transactionRepository.findByDateBetween(startDate, endDate);
     }
 
+    // Getting transactions by account name
+    public List<Transaction> getTransactionByAccountName(String accountName) {
+        return transactionRepository.findByAccountName(accountName);
+    }
+
     public Transaction createTransaction(Transaction transaction) {
         // We load the account that already exists from th edb
         Account account = accountRepository.findById(transaction.getAccount().getAccount_id())

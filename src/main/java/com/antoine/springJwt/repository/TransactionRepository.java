@@ -12,5 +12,6 @@ import com.antoine.springJwt.model.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
     List<Transaction> findByAccountId(Integer accountId);
     List<Transaction> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Transaction> findByAccountName(String accountName);
     
 }

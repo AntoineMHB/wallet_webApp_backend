@@ -26,9 +26,6 @@ public class Transaction {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = true)
-    private Category category;
 
     @Column(name = "date")
     private LocalDateTime date;
@@ -67,13 +64,6 @@ public class Transaction {
         this.account = account;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 
     public LocalDateTime getDate() {
         return date;

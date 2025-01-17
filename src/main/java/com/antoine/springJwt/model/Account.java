@@ -20,7 +20,7 @@ public class Account {
     private Integer id;
 
     @Column(name = "account_name")
-    private String account_name;
+    private String name;
 
     @Column(name = "account_amount")
     private Double amount;
@@ -57,12 +57,12 @@ public class Account {
         this.id = id;
     }
 
-    public String getAccount_name() {
-        return account_name;
+    public String getName() {
+        return name;
     }
 
-    public void setAccount_name(String account_name) {
-        this.account_name = account_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getUser() {

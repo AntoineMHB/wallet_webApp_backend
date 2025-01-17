@@ -30,6 +30,12 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionByAccount(accountId));
     }
 
+    // getting transactions by account name
+    @GetMapping("/account/transactions/{accountName}")
+    public ResponseEntity<List<Transaction>> getTransactionByAccountName(@PathVariable String accountName) {
+        return ResponseEntity.ok(transactionService.getTransactionByAccountName(accountName));
+    }
+
     @GetMapping("/date-range")
     public ResponseEntity<List<Transaction>> getTransactionsByDateRange(
         @RequestParam LocalDateTime startDate,
