@@ -22,11 +22,14 @@ public class Account {
     @Column(name = "account_name")
     private String account_name;
 
+    @Column(name = "account_amount")
+    private Double amount;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable=false)
     private User user;
 
-    @OneToMany(mappedBy = "account", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "account", cascade=CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 
     // Constructors
@@ -74,6 +77,16 @@ public class Account {
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+
 
 
     

@@ -5,15 +5,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.antoine.springJwt.model.Account;
 import com.antoine.springJwt.model.Transaction;
+import com.antoine.springJwt.repository.AccountRepository;
 import com.antoine.springJwt.repository.TransactionRepository;
 
 @Service
 public class TransactionService {
     private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
 
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
     }
 
     public List<Transaction> getTransactionByAccount(Integer accountId) {
@@ -25,6 +29,12 @@ public class TransactionService {
     }
 
     public Transaction createTransaction(Transaction transaction) {
+        // We load the account that already exists from th edb
+        Account account = accountRepository.findById(transaction.getAccount().getAccount_id())
+            .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        // we set the loaded Account to the transaction
+        transaction.setAccount(account);
         return transactionRepository.save(transaction);
     }
 
