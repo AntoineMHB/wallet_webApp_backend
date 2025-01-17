@@ -52,6 +52,12 @@ public class ExpenseController {
           return ResponseEntity.noContent().build();
       }
 
+      // getting transactions by account name
+    @GetMapping("/account/expenses/{accountName}")
+    public ResponseEntity<List<Expense>> getExpenseByAccountName(@PathVariable String accountName) {
+        return ResponseEntity.ok(expenseService.getExpenseByAccountName(accountName));
+    }
+
          // Delete an expense
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable Integer id) {

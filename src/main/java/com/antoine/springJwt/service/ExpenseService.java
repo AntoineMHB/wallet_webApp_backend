@@ -29,6 +29,11 @@ public class ExpenseService {
         return (List<Expense>) expenseRepository.findByUserId(userId);
     }
 
+     // Getting expenses by account name
+    public List<Expense> getExpenseByAccountName(String accountName) {
+        return expenseRepository.findByAccountName(accountName);
+    }
+
      // Update an expense
     //  public Expense updateExpense(Integer id, Expense updatedExpense) {
     //     return expenseRepository.findById(id).map(expense -> {

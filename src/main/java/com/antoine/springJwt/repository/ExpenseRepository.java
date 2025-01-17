@@ -10,6 +10,7 @@ import com.antoine.springJwt.model.Expense;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Integer>{
     List<Expense> findByUserId(Integer userId);
+    List<Expense> findByAccountName(String accountName);
 
     
 }
