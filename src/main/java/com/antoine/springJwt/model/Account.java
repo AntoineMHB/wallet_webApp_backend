@@ -29,6 +29,9 @@ public class Account {
     @JoinColumn(name = "user_id", nullable=false)
     private User user;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Expense> expenses = new ArrayList<>();
+
     @OneToMany(mappedBy = "account", cascade=CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 
@@ -86,11 +89,14 @@ public class Account {
         this.amount = amount;
     }
 
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
 
 
-
-    
-
-   
     
 }

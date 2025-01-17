@@ -36,6 +36,10 @@ public class Expense {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
     // Getters and setters
 
     public Integer getId() {
@@ -87,6 +91,17 @@ public class Expense {
         this.user = user;
     }
 
+
+    public Account getAccount() {
+        return account;
+    }
+
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    
 
     
     

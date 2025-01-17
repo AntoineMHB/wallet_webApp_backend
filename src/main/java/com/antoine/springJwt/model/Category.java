@@ -29,14 +29,12 @@ public class Category {
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> subCategories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Transaction> transactions = new ArrayList<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Budget> budgets = new ArrayList<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expense> expenses;
+    private List<Expense> expenses = new ArrayList<>();
 
     // Constructors
     public void addSubCategory(Category subCategory) {
@@ -81,14 +79,6 @@ public class Category {
 
     public void setSubCategories(List<Category> subCategories) {
         this.subCategories = subCategories;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
     }
 
     public List<Budget> getBudgets() {
