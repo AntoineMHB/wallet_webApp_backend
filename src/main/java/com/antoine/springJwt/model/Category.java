@@ -35,6 +35,9 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Budget> budgets = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expenses;
+
     // Constructors
     public void addSubCategory(Category subCategory) {
         subCategories.add(subCategory);

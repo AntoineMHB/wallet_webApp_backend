@@ -22,8 +22,8 @@ public class Account {
     @Column(name = "account_name")
     private String account_name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", nullable=false)
     private User user;
 
     @OneToMany(mappedBy = "account", cascade=CascadeType.ALL, orphanRemoval=true)

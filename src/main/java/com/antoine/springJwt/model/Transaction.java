@@ -2,6 +2,7 @@ package com.antoine.springJwt.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
