@@ -5,4 +5,4 @@ RUN mvn clean package -DskipTests
 FROM openjdk:21-slim
 COPY --from=build /target/springJwt-0.0.1-SNAPSHOT.jar springJwt.jar
 EXPOSE 8080
-ENTRYPOINT [ "java","-jar","demo.jar" ]
+ENTRYPOINT [ "java","-jar","springJwt.jar" ]
