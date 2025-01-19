@@ -2,6 +2,8 @@ package com.antoine.springJwt.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;

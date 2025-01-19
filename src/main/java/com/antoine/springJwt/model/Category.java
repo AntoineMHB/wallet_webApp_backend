@@ -9,8 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -22,30 +20,12 @@ public class Category {
     @Column(name = "category_name", nullable = false)
     private String category_name;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_category_id", nullable = true)
-    private Category parentCategory; // For subcategories
-
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Category> subCategories = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Budget> budgets = new ArrayList<>();
-
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses = new ArrayList<>();
 
-    // Constructors
-    public void addSubCategory(Category subCategory) {
-        subCategories.add(subCategory);
-        subCategory.setParentCategory(this);
-    }
+   
 
-    public void removeSubCategory(Category subCategory) {
-        subCategories.remove(subCategory);
-        subCategory.setParentCategory(null);
-    }
+  
 
     // Getters and setters
 
@@ -65,30 +45,14 @@ public class Category {
         this.category_name = category_name;
     }
 
-    public Category getParentCategory() {
-        return parentCategory;
+    public List<Expense> getExpenses() {
+        return expenses;
     }
 
-    public void setParentCategory(Category parentCategory) {
-        this.parentCategory = parentCategory;
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
     }
 
-    public List<Category> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(List<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
-
-    public List<Budget> getBudgets() {
-        return budgets;
-    }
-
-    public void setBudgets(List<Budget> budgets) {
-        this.budgets = budgets;
-    }
-
-
+    
     
 }

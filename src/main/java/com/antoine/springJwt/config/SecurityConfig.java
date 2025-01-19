@@ -44,7 +44,8 @@ public class SecurityConfig {
                         .requestMatchers("/login/**",
                          "/register/**", "/api/budgets/**", 
                          "/api/categories/**", "/api/accounts/**",
-                         "/api/transactions/**", "/api/expenses/**").permitAll()
+                         "/api/transactions/**", "/api/expenses/**",
+                         "/api/accounts/user/{userId}/**").permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsServiceImp)
                 .sessionManagement(session -> session

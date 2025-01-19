@@ -12,15 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.antoine.springJwt.model.Budget;
+import com.antoine.springJwt.model.User;
 import com.antoine.springJwt.service.BudgetService;
+import com.antoine.springJwt.service.UserService;
 
 @RestController
 @RequestMapping("/api/budgets")
 public class BudgetController {
     private final BudgetService budgetService;
+    private final UserService userService;
 
-    public BudgetController(BudgetService budgetService) {
+    public BudgetController(BudgetService budgetService, UserService userService) {
         this.budgetService = budgetService;
+        this.userService = userService;
     }
 
     @GetMapping("/user/{userId}")
@@ -30,6 +34,16 @@ public class BudgetController {
 
     @PostMapping
     public ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
+        if (budget.getUser() == null || budget.getUser().getId() == null) {
+            return ResponseEntity.badRequest().body(null); // User is mandatory
+        }
+
+        // Fetch the user from the db
+        User user = userService.getUserById(budget.getUser().getId());
+        if (user == null) {
+            return ResponseEntity.badRequest().body(null); // Invalid user
+        }
+        budget.setUser(user);
         return ResponseEntity.ok(budgetService.creaBudget(budget));
     }
 

@@ -19,9 +19,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public List<Category> getSubcategories(Integer parentId) {
-        return categoryRepository.findByParentCategoryId(parentId);
-    }
+    
 
     public Category createCategory(Category category) {
         return categoryRepository.save(category);

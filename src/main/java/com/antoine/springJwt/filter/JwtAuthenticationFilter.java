@@ -27,7 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsServiceImp userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
-
     }
 
     @Override
@@ -45,25 +44,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
+        System.out.println("Extracted JWT Token: " + token);  // Log the token
+
         String email = jwtService.extractUserEmail(token);
+        if (email != null) {
+            System.out.println("Extracted email from token: " + email);  // Log the email
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                if (userDetails != null) {
+                    System.out.println("User details loaded for email: " + email);  // Log successful user loading
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                    if (jwtService.isValid(token, userDetails)) {
+                        System.out.println("JWT is valid, authenticating user...");  // Log token validity
 
-            if (jwtService.isValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
+                        authToken.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    } else {
+                        System.out.println("Invalid JWT token.");
+                    }
+                } else {
+                    System.out.println("User not found for email: " + email);  // Log user not found
+                }
             }
         }
+
         filterChain.doFilter(request, response);
-
     }
-
 }

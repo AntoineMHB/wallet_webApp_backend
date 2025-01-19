@@ -20,6 +20,10 @@ public class BudgetService {
     }
 
     public Budget creaBudget(Budget budget) {
+        // we ensure all mandatory fields area set
+        if (budget.getAmount() == null || budget.getUser() == null) {
+            throw new IllegalArgumentException("Amount and User are required");
+        }
         return budgetRepository.save(budget);
     }
 

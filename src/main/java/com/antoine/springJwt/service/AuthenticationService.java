@@ -2,6 +2,7 @@ package com.antoine.springJwt.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,19 +39,40 @@ public class AuthenticationService {
 
         String token = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(
+            token, 
+            user.getId(),
+            user.getFirstname(), 
+            user.getLastname(), 
+            user.getEmail());
     }
 
-    public AuthenticationResponse authenticate(User request) {
+   // Method to authenticate a user during login
+   public AuthenticationResponse authenticate(User request) {
+    try {
+        // Authenticate using the AuthenticationManager
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-        User user = repository.findByEmail(request.getEmail()).orElseThrow();
+        // Find the user by email after authentication
+        User user = repository.findByEmail(request.getEmail()).orElseThrow(() -> 
+            new RuntimeException("User not found"));
+
+        // Generate JWT token for the authenticated user
         String token = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(token);
+        // Return the response containing the JWT token and user details
+        return new AuthenticationResponse(
+            token, 
+            user.getId(),
+            user.getFirstname(), 
+            user.getLastname(), 
+            user.getEmail()
+           );
+    } catch (AuthenticationException e) {
+        // Handle invalid credentials or other authentication errors
+        throw new RuntimeException("Invalid email or password", e);
     }
+}
 
 }

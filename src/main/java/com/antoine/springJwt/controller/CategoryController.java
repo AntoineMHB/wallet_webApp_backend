@@ -28,10 +28,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    @GetMapping("/subcategories/{parentId}")
-    public ResponseEntity<List<Category>> getSubcategories(@PathVariable Integer parentId) {
-        return ResponseEntity.ok(categoryService.getSubcategories(parentId));
-    }
 
     @PostMapping
     public ResponseEntity<Category> createCategorEntity(@RequestBody Category category) {
