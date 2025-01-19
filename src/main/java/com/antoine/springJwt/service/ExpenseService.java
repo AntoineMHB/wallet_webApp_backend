@@ -1,23 +1,57 @@
 package com.antoine.springJwt.service;
 
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.antoine.springJwt.model.Account;
+import com.antoine.springJwt.model.Category;
 import com.antoine.springJwt.model.Expense;
+import com.antoine.springJwt.model.User;
+import com.antoine.springJwt.repository.AccountRepository;
+import com.antoine.springJwt.repository.CategoryRepository;
 import com.antoine.springJwt.repository.ExpenseRepository;
+import com.antoine.springJwt.repository.UserRepository;
 
 @Service
 public class ExpenseService {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired UserRepository userRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
     
+    @Autowired
+    private AccountRepository accountRepository;
+
+
+    
+   
     // Add a new expense
-      public Expense addExpense(Expense expense) {
-        return expenseRepository.save(expense);
-    }
+    public Expense addExpense(Expense expense) {
+      Optional<User> userOpt = userRepository.findById(expense.getUser().getUser_id());
+      Optional<Category> categoryOpt = categoryRepository.findById(expense.getCategory().getCategory_id());
+      Optional<Account> accountOpt = accountRepository.findById(expense.getAccount().getAccount_id());
+
+      if (userOpt.isPresent() && categoryOpt.isPresent() && accountOpt.isPresent()) {
+          // Set the correct references to the expense
+          expense.setUser(userOpt.get());
+          expense.setCategory(categoryOpt.get());
+          expense.setAccount(accountOpt.get());
+
+          // Save the expense and return it
+          return expenseRepository.save(expense);
+      } else {
+          throw new IllegalArgumentException("Invalid userId, categoryId, or accountId provided");
+      }
+  }
 
      // Get all expenses
      public List<Expense> getAllExpenses() {

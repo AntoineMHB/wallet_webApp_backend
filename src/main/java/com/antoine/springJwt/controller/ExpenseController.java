@@ -10,24 +10,65 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.antoine.springJwt.model.Account;
 import com.antoine.springJwt.model.Expense;
+import com.antoine.springJwt.model.User;
+import com.antoine.springJwt.repository.AccountRepository;
+import com.antoine.springJwt.service.AccountService;
 import com.antoine.springJwt.service.ExpenseService;
+import com.antoine.springJwt.service.UserService;
 
 @RestController
 @RequestMapping("/api/expenses")
 public class ExpenseController {
+    private final UserService userService;
+    private final AccountRepository accountRepository;
+
+     public ExpenseController( UserService userService, AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+        this.userService = userService;
+    }
+
+
 
     @Autowired
     private ExpenseService expenseService;
     
-      // Add a new expense
-    @PostMapping
-    public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
-        Expense savedExpense = expenseService.addExpense(expense);
-        return ResponseEntity.ok(savedExpense);
+    
+   // Add a new expense
+   @PostMapping
+   public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
+       // Assuming the Expense object is populated with all necessary fields
+
+       if (expense.getUser() == null || expense.getUser().getId() == null) {
+            return ResponseEntity.badRequest().body(null); // User is mandatory
+        }
+
+        // Fetch the user from the db
+        User user = userService.getUserById(expense.getUser().getId());
+        if (user == null) {
+            return ResponseEntity.badRequest().body(null); // Invalid user
+        }
+        expense.setUser(user);
+
+        // Validate Account ID
+    if (expense.getAccount() == null || expense.getAccount().getAccount_id() == null) {
+        return ResponseEntity.badRequest().body(null); // Account is mandatory
     }
+
+    // Fetch the account from the DB
+    Account account = accountRepository.findById(expense.getAccount().getAccount_id()).orElse(null);
+    if (account == null) {
+        return ResponseEntity.badRequest().body(null); // Invalid account
+    }
+    expense.setAccount(account);
+       Expense savedExpense = expenseService.addExpense(expense);
+       return ResponseEntity.ok(savedExpense);
+   }
+
 
        // Get all expenses
     @GetMapping
