@@ -24,7 +24,7 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @JsonIgnore
+    
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
