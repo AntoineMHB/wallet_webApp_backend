@@ -19,6 +19,11 @@ public class AccountService {
         return accountRepository.findByUserId(userId);
     }
 
+     public Account getAccountById(Integer accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found with ID: " + accountId));
+    }
+
     public Account createAccount(Account account) {
         return accountRepository.save(account);
     }
