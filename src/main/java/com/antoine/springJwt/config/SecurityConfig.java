@@ -45,7 +45,7 @@ public class SecurityConfig {
                          "/register/**", "/api/budgets/**", 
                          "/api/categories/**", "/api/accounts/**",
                          "/api/transactions/**", "/api/expenses/**",
-                         "/api/accounts/user/{userId}/**").permitAll()
+                         "/api/accounts/user/{userId}/**", "/api/expenses/user/{userId}/**").permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsServiceImp)
                 .sessionManagement(session -> session
